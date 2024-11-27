@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-3001
+spec:
+  podSelector:
+    matchLabels:
+      app: nodejs-basic  # 目標 Pod 的標籤
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: test2  # 指定來源 namespace
+      podSelector:
+        matchLabels:
+          app: python-basic  # 指定來源 Pod 的標籤
+    ports:
+    - protocol: TCP
+      port: 3001  # 指定允許的目標埠
